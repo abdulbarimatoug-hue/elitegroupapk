@@ -1,0 +1,31 @@
+name: elite_tourism_group
+repository: https://github.com/ly-elite/tourism-platform
+
+packages:
+  - packages/**
+
+command:
+  version:
+    # Use conventional commits to determine version bumps
+    branch: main
+  bootstrap:
+    # Run pub get in all packages concurrently
+    runPubGetInParallel: true
+    usePubspecOverrides: true
+
+scripts:
+  lint:all:
+    run: melos exec -- "dart analyze . --fatal-infos"
+    description: "Run dart analyze on all packages in the workspace"
+
+  test:all:
+    run: melos exec --dir-exists="test" -- "flutter test"
+    description: "Run flutter test on all packages containing tests"
+
+  clean:all:
+    run: melos exec -- "flutter clean"
+    description: "Clean all Flutter/Dart packages"
+
+  format:check:
+    run: melos exec -- "dart format --set-exit-if-changed ."
+    description: "Check Dart code formatting"

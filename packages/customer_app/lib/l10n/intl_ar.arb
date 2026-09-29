@@ -1,0 +1,34 @@
+{
+  "@@locale": "ar",
+  "appName": "مجموعة النخبة للخدمات السياحية",
+  "appTagline": "بوابتكم لرحلات فاخرة وتجارب سياحية لا تُنسى",
+
+  "navHome": "الرئيسية",
+  "navVisas": "التأشيرات",
+  "navBookings": "حجوزاتي",
+  "navFavorites": "المفضلة",
+  "navProfile": "حسابي",
+
+  "btnBookPackage": "اطلب هذه الباقة",
+  "btnCustomTrip": "صمّم رحلتك",
+  "btnFlightBooking": "احجز تذكرتك الآن",
+  "btnBrowseVisas": "تصفح خدمة التأشيرات",
+  "btnSubmitRequest": "إرسال الطلب",
+  "btnContactWhatsApp": "تواصل عبر واتساب",
+  "btnDownloadPdf": "تحميل PDF",
+  "btnEdit": "تعديل",
+  "btnNext": "التالي",
+  "btnPrevious": "رجوع",
+
+  "whatsappDefaultTeam": "فريق المبيعات والحجوزات (الرئيسي)",
+  "whatsappSecondaryTeam1": "خدمة العملاء والاستفسارات",
+  "whatsappSecondaryTeam2": "قسم التأشيرات والرحلات الخاصة",
+
+  "statusPending": "قيد المراجعة",
+  "statusProcessing": "قيد المعالجة",
+  "statusConfirmed": "مؤكد",
+  "statusIssued": "تم الإصدار",
+  "statusCancelled": "ملغى",
+  "statusCompleted": "مكتمل",
+  "statusRejected": "مرفوض"
+}

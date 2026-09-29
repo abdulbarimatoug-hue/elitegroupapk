@@ -1,0 +1,59 @@
+name: Build Elite Tourism APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Setup Melos & PATH
+        run: |
+          dart pub global activate melos
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Bootstrap Monorepo Dependencies
+        run: |
+          export PATH="$HOME/.pub-cache/bin:$PATH"
+          melos bootstrap || (
+            echo "Falling back to sequential flutter pub get..."
+            cd packages/core_domain && flutter pub get && \
+            cd ../core_data && flutter pub get && \
+            cd ../customer_app && flutter pub get
+          )
+
+      - name: Build Customer App APK (Release)
+        run: |
+          cd packages/customer_app
+          flutter pub get
+          flutter build apk --release -t lib/main.dart --no-tree-shake-icons
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: elite-tourism-customer-app-release
+          path: packages/customer_app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14

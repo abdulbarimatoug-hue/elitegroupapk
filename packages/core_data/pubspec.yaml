@@ -1,0 +1,23 @@
+name: core_data
+description: "Clean Architecture Data layer for LY-Elite Tourism Group implementing repositories via Firebase Firestore, Auth, and Storage."
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  core_domain:
+    path: ../core_domain
+  cloud_firestore: ^5.5.0
+  firebase_auth: ^5.3.3
+  firebase_storage: ^12.3.6
+  equatable: ^2.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0

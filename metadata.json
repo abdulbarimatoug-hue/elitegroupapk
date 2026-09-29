@@ -1,0 +1,6 @@
+{
+  "name": "مجموعة النخبة للخدمات السياحية | LY-Elite Tourism",
+  "description": "تطبيق متكامل لخدمات السفر والسياحة لمجموعة النخبة (LY-Elite Tourism Group) مع معمارية Clean Architecture وFirebase",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
