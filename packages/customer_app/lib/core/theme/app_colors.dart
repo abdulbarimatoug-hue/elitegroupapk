@@ -13,6 +13,10 @@ class AppColors {
   static const Color goldLight = Color(0xFFE8D18F);
   static const Color goldSoftBg = Color(0xFFF9F5EA);
 
+  // Aliases for Compatibility (حل أخطاء الاستدعاء)
+  static const Color primaryGold = accentGold;
+  static const Color surfaceWhite = lightCard;
+
   // Light Theme Palette
   static const Color lightBackground = Color(0xFFF7F4EC);
   static const Color lightCard = Color(0xFFFFFFFF);
