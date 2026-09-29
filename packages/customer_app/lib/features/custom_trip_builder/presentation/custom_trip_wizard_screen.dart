@@ -39,7 +39,7 @@ class _CustomTripWizardScreenState
 
   // Step 3 State (Flight & Days)
   final _departureCityController = TextEditingController(text: 'طرابلس (معيتيقة)');
-  String _flightClass = 'اقتصادية';
+  String flightClass = 'اقتصادية'; // معرّف كـ flightClass بدلاً من _flightClass
   DateTime _startDate = DateTime.now().add(const Duration(days: 20));
   int _totalDays = 8;
   String? _selectedReadyPackageId = 'pkg_classic_7';
@@ -182,7 +182,7 @@ class _CustomTripWizardScreenState
         selectedCityNames: _selectedCityIds.toList(),
         selectedCountryNames: _selectedCountryIds.toList(),
         departureCity: _departureCityController.text.trim(),
-        flightClass: _flightClass,
+        flightClass: flightClass,
         startDate: _startDate,
         totalDays: _totalDays,
         packageChoiceType: 'custom',
@@ -202,7 +202,6 @@ class _CustomTripWizardScreenState
 
       final created = await tripRepo.createCustomTripRequest(req);
 
-      // Clear draft after submission
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('custom_trip_draft');
 
@@ -463,7 +462,7 @@ class _CustomTripWizardScreenState
         const SizedBox(height: 12),
         Row(
           children: ['اقتصادية', 'رجال أعمال'].map((c) {
-            final isSel = _flightClass == c;
+            final isSel = flightClass == c;
             return Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: ChoiceChip(
@@ -471,7 +470,7 @@ class _CustomTripWizardScreenState
                 selected: isSel,
                 selectedColor: AppColors.primaryNavy,
                 labelStyle: TextStyle(color: isSel ? Colors.white : AppColors.primaryNavy),
-                onSelected: (v) => setState(() => _flightClass = c),
+                onSelected: (v) => setState(() => flightClass = c),
               ),
             );
           }).toList(),
@@ -480,14 +479,14 @@ class _CustomTripWizardScreenState
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: isMatch ? Colors.emerald.shade50 : Colors.amber.shade50,
+            color: isMatch ? Colors.green.shade50 : Colors.amber.shade50,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.emerald.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠️', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.emerald : Colors.amber.shade900)),
+              Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
+              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠️', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900)),
             ],
           ),
         ),
@@ -500,151 +499,5 @@ class _CustomTripWizardScreenState
                   Text(cityName, style: const TextStyle(fontWeight: FontWeight.bold)),
                   Row(
                     children: [
-                      IconButton(icon: const Icon(Icons.remove_circle_outline), onPressed: () => setState(() => _cityDaysDistribution[cityName] = (_cityDaysDistribution[cityName]! > 1 ? _cityDaysDistribution[cityName]! - 1 : 1))),
-                      Text('${_cityDaysDistribution[cityName]} ليالٍ', style: const TextStyle(fontWeight: FontWeight.bold)),
-                      IconButton(icon: const Icon(Icons.add_circle_outline), onPressed: () => setState(() => _cityDaysDistribution[cityName] = _cityDaysDistribution[cityName]! + 1)),
-                    ],
-                  ),
-                ],
-              ),
-            )),
-      ],
-    );
-  }
-
-  Widget _buildStep4StayAndReception() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SwitchListTile(
-          title: const Text('خدمة الاستقبال والتوديع بالمطار', style: TextStyle(fontWeight: FontWeight.bold)),
-          value: _airportMeetAndGreet,
-          activeColor: AppColors.accentGold,
-          onChanged: (v) => setState(() => _airportMeetAndGreet = v),
-        ),
-        const SizedBox(height: 12),
-        const Text('تصنيف النجوم المفضل:', style: TextStyle(fontWeight: FontWeight.bold)),
-        Wrap(
-          spacing: 8,
-          children: ['3 نجوم', '4 نجوم', '5 نجوم'].map((s) => FilterChip(
-                label: Text(s),
-                selected: _starRatings.contains(s),
-                selectedColor: AppColors.accentGold,
-                onSelected: (v) => setState(() => v ? _starRatings.add(s) : _starRatings.remove(s)),
-              )).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStep5TourPreferences() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('لغة المرشد السياحي:', style: TextStyle(fontWeight: FontWeight.bold)),
-        Row(
-          children: ['عربية', 'إنجليزية'].map((l) => Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: ChoiceChip(
-                  label: Text(l),
-                  selected: _guideLanguage == l,
-                  selectedColor: AppColors.primaryNavy,
-                  labelStyle: TextStyle(color: _guideLanguage == l ? Colors.white : AppColors.primaryNavy),
-                  onSelected: (v) => setState(() => _guideLanguage = l),
-                ),
-              )).toList(),
-        ),
-        const SizedBox(height: 16),
-        const Text('نوع الجولات السياحية:', style: TextStyle(fontWeight: FontWeight.bold)),
-        Row(
-          children: ['خاصة Private', 'ضمن مجموعة Group'].map((t) => Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: ChoiceChip(
-                  label: Text(t),
-                  selected: _tourType == t,
-                  selectedColor: AppColors.primaryNavy,
-                  labelStyle: TextStyle(color: _tourType == t ? Colors.white : AppColors.primaryNavy),
-                  onSelected: (v) => setState(() => _tourType = t),
-                ),
-              )).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStep6BoardingPassSummary() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Boarding Pass Design Card
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.primaryNavy,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))],
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Text('بطاقة اعتماد الرحلة', style: TextStyle(color: AppColors.goldLight, fontSize: 11)),
-                      Text(_nameController.text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                    ]),
-                    const Icon(Icons.flight_takeoff, color: AppColors.accentGold, size: 28),
-                  ],
-                ),
-              ),
-              const Divider(color: Colors.white24, height: 1),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Text('الانطلاق', style: TextStyle(color: Colors.white60, fontSize: 10)),
-                      Text(_departureCityController.text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    ]),
-                    Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                      const Text('المدة', style: TextStyle(color: Colors.white60, fontSize: 10)),
-                      Text('$_totalDays أيام', style: const TextStyle(color: AppColors.goldLight, fontWeight: FontWeight.bold)),
-                    ]),
-                    Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                      const Text('تاريخ السفر', style: TextStyle(color: Colors.white60, fontSize: 10)),
-                      Text('${_startDate.year}-${_startDate.month}-${_startDate.day}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    ]),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        // 3 Separate WhatsApp Action Buttons (Company lines)
-        const Text('أرسل طلبك مباشرة إلى فريقك المفضل عبر واتساب:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.primaryNavy)),
-        const SizedBox(height: 10),
-
-        ...CompanyContacts.lines.map((line) => Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: line.isDefault ? AppColors.accentGold : Colors.white,
-                  foregroundColor: line.isDefault ? AppColors.primaryNavyDark : AppColors.primaryNavy,
-                  side: line.isDefault ? null : const BorderSide(color: AppColors.primaryNavy),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                icon: const Icon(Icons.chat_bubble_outline),
-                label: Text('${line.title} (${line.formattedDisplay})'),
-                onPressed: _isSubmitting ? null : () => _submitRequest(line.number),
-              ),
-            )),
-      ],
-    );
-  }
-}
+                      IconButton(
+                        icon: const Icon(Icons.remove_circle_outline)
