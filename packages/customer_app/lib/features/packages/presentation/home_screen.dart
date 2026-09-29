@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/company_contacts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/providers/repository_providers.dart';
-import 'package0:core_domain/entities/travel_package_entity.dart';
+// ✅ تم تصحيح الاستيراد هنا
+import 'package:core_domain/entities/travel_package_entity.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -116,7 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   Row(
                     children: [
-                      // Card 1: Custom Trip Builder (القسم ك)
+                      // Card 1: Custom Trip Builder
                       Expanded(
                         child: _buildProminentServiceCard(
                           title: 'صمّم رحلتك',
@@ -130,7 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      // Card 2: Flight Booking (القسم ل)
+                      // Card 2: Flight Booking
                       Expanded(
                         child: _buildProminentServiceCard(
                           title: 'احجز تذكرتك الآن',
@@ -146,7 +147,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  // Card 3: Visas Service (القسم هـ)
+                  // Card 3: Visas Service
                   _buildProminentBannerCard(
                     title: 'تصفح خدمة التأشيرات',
                     subtitle: 'تأشيرات سياحية وإلكترونية معتمدة لأهم الوجهات العالمية',
