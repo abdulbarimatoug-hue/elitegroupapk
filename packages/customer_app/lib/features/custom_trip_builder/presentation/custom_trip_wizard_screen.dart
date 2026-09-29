@@ -39,7 +39,7 @@ class _CustomTripWizardScreenState
 
   // Step 3 State (Flight & Days)
   final _departureCityController = TextEditingController(text: 'طرابلس (معيتيقة)');
-  String flightClass = 'اقتصادية'; // معرّف كـ flightClass بدلاً من _flightClass
+  String flightClass = 'اقتصادية';
   DateTime _startDate = DateTime.now().add(const Duration(days: 20));
   int _totalDays = 8;
   String? _selectedReadyPackageId = 'pkg_classic_7';
@@ -500,4 +500,5 @@ class _CustomTripWizardScreenState
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.remove_circle_outline)
+                        icon: const Icon(Icons.remove_circle_outline),
+                        onPressed: () {
