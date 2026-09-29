@@ -25,7 +25,8 @@ if (flutterVersionName == null) {
 android {
     namespace = "ly.elite.tourism.customer_app"
     compileSdk = 34
-    ndkVersion = flutter.ndkVersion
+    // ⬇️ تم التحديث هنا لحل مشكلة التعارض وإرضاء متطلبات Firebase
+    ndkVersion = "25.1.8937393"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
