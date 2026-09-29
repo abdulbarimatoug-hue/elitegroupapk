@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/company_contacts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/providers/repository_providers.dart';
-import 'package:core_domain/entities/travel_package_entity.dart';
+import 'package0:core_domain/entities/travel_package_entity.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -347,7 +347,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.parseBorder('1px solid #C9A227'),
+          border: Border.all(
+            color: const Color(0xFFC9A227),
+            width: 1.0,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
@@ -521,7 +524,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           '\$${pkg.price.toInt()}',
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.black,
+                            fontWeight: FontWeight.w900,
                             color: AppColors.primaryNavy,
                           ),
                         ),
