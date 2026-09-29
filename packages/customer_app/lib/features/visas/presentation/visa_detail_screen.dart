@@ -160,7 +160,8 @@ class _VisaDetailScreenState extends ConsumerState<VisaDetailScreen> {
                           '\$${v.priceUsd.toInt()}',
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.black,
+                            // ✅ تم التعديل هنا لتفادي خطأ البناء
+                            fontWeight: FontWeight.w900,
                             color: AppColors.primaryNavyDark,
                           ),
                         ),
