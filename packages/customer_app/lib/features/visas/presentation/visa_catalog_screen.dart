@@ -163,7 +163,8 @@ class VisaCatalogScreen extends ConsumerWidget {
                                     '\$${visa.priceUsd.toInt()}',
                                     style: const TextStyle(
                                       color: AppColors.primaryNavyDark,
-                                      fontWeight: FontWeight.black,
+                                      // ✅ تم التعديل هنا لتفادي الخطأ
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 13,
                                     ),
                                   ),
