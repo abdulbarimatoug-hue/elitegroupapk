@@ -85,7 +85,6 @@ class _CustomTripWizardScreenState
         });
       }
 
-      // Load draft from SharedPreferences if exists
       final prefs = await SharedPreferences.getInstance();
       final draftJson = prefs.getString('custom_trip_draft');
       if (draftJson != null) {
@@ -392,7 +391,9 @@ class _CustomTripWizardScreenState
         if (_tripType == 'رحلة عمل') ...[
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
-            value: _selectedBusinessSector,
+            value: (_config?.businessSectors ?? []).contains(_selectedBusinessSector)
+                ? _selectedBusinessSector
+                : null,
             hint: const Text('اختر قطاع الأعمال'),
             decoration: const InputDecoration(border: OutlineInputBorder()),
             items: (_config?.businessSectors ?? []).map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
@@ -453,6 +454,11 @@ class _CustomTripWizardScreenState
                             } else {
                               _selectedCityIds.remove(city.id);
                               _cityDaysDistribution.remove(city.name);
+
+                              bool hasOtherCities = c.cities.any((otherCity) => _selectedCityIds.contains(otherCity.id));
+                              if (!hasOtherCities) {
+                                _selectedCountryIds.remove(c.id);
+                              }
                             }
                           });
                         },
@@ -501,12 +507,4 @@ class _CustomTripWizardScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        ..._cityDaysDistribution.keys.map((cityName) => Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: Mai
+              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeig
