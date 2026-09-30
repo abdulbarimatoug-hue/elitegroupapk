@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/constants/company_contacts.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/utils/whatsapp_helper.dart';
-import '../../../core/providers/repository_providers.dart';
-import '../../domain/entities/trip_builder_config_entity.dart';
-import '../../domain/entities/custom_trip_request_entity.dart';
+import 'package:customer_app/core/constants/company_contacts.dart';
+import 'package:customer_app/core/theme/app_colors.dart';
+import 'package:customer_app/core/utils/whatsapp_helper.dart';
+import 'package:customer_app/core/providers/repository_providers.dart';
+import 'package:customer_app/features/custom_trip_builder/domain/entities/trip_builder_config_entity.dart';
+import 'package:customer_app/features/custom_trip_builder/domain/entities/custom_trip_request_entity.dart';
 
 class CustomTripWizardScreen extends ConsumerStatefulWidget {
   const CustomTripWizardScreen({super.key});
@@ -33,11 +33,11 @@ class _CustomTripWizardScreenState
   final int _childrenCount = 1;
   final _budgetController = TextEditingController(text: '3500');
 
-  // Step 2 State (Selected Cities & Countries)
+  // Step 2 State
   final Set<String> _selectedCityIds = {'c_ist', 'c_trabzon'};
   final Set<String> _selectedCountryIds = {'turkey'};
 
-  // Step 3 State (Flight & Days)
+  // Step 3 State
   final _departureCityController = TextEditingController(text: 'طرابلس (معيتيقة)');
   String flightClass = 'اقتصادية';
   final DateTime _startDate = DateTime.now().add(const Duration(days: 20));
@@ -45,13 +45,13 @@ class _CustomTripWizardScreenState
   final Map<String, int> _cityDaysDistribution = {'إسطنبول': 4, 'طرابزون': 4};
   final Map<String, String> _countryTransit = {'تركيا': 'طيران داخلي'};
 
-  // Step 4 State (Reception & Stay)
+  // Step 4 State
   bool _airportMeetAndGreet = true;
   final Set<String> _accommodationTypes = {'فنادق'};
   final Set<String> _starRatings = {'5 نجوم'};
   final Set<String> _additionalServices = {'تأمين سفر دولي معتمد', 'شريحة إنترنت واتصال محلية'};
 
-  // Step 5 State (Preferences)
+  // Step 5 State
   final String _guideLanguage = 'عربية';
   final String _tourType = 'خاصة Private';
   final Set<String> _tourInterests = {'طبيعة وجبال وغابات', 'تسوق ومولات وأسوق شعبية'};
@@ -506,4 +506,4 @@ class _CustomTripWizardScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900
+              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bo
