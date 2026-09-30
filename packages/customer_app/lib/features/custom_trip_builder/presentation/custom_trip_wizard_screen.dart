@@ -6,8 +6,8 @@ import '../../../core/constants/company_contacts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/whatsapp_helper.dart';
 import '../../../core/providers/repository_providers.dart';
-import 'package0domain/entities/trip_builder_config_entity.dart';
-import 'package0domain/entities/custom_trip_request_entity.dart';
+import '../../domain/entities/trip_builder_config_entity.dart';
+import '../../domain/entities/custom_trip_request_entity.dart';
 
 class CustomTripWizardScreen extends ConsumerStatefulWidget {
   const CustomTripWizardScreen({super.key});
@@ -54,7 +54,7 @@ class _CustomTripWizardScreenState
   // Step 5 State (Preferences)
   final String _guideLanguage = 'عربية';
   final String _tourType = 'خاصة Private';
-  final Set<String> _tourInterests = {'طبيعة وجبال وغابات', 'تسوق ومولات وأسواق شعبية'};
+  final Set<String> _tourInterests = {'طبيعة وجبال وغابات', 'تسوق ومولات وأسوق شعبية'};
 
   bool _isSubmitting = false;
 
@@ -506,4 +506,4 @@ class _CustomTripWizardScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.sha
+              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900
