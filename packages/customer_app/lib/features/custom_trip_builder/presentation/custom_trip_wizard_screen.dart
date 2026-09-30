@@ -6,8 +6,8 @@ import 'package:customer_app/core/constants/company_contacts.dart';
 import 'package:customer_app/core/theme/app_colors.dart';
 import 'package:customer_app/core/utils/whatsapp_helper.dart';
 import 'package:customer_app/core/providers/repository_providers.dart';
-import 'package:customer_app/features/custom_trip_builder/domain/entities/trip_builder_config_entity.dart';
-import 'package:customer_app/features/custom_trip_builder/domain/entities/custom_trip_request_entity.dart';
+import 'package:core_domain/entities/trip_builder_config_entity.dart';
+import 'package:core_domain/entities/custom_trip_request_entity.dart';
 
 class CustomTripWizardScreen extends ConsumerStatefulWidget {
   const CustomTripWizardScreen({super.key});
