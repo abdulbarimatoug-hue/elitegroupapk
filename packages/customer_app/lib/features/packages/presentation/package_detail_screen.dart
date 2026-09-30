@@ -365,7 +365,7 @@ class _PackageDetailScreenState extends ConsumerState<PackageDetailScreen> {
                     '\$${pkg.price.toInt()}',
                     style: const TextStyle(
                       fontSize: 22,
-                      fontWeight: FontWeight.black,
+                      fontWeight: FontWeight.w900,
                       color: AppColors.primaryNavy,
                     ),
                   ),

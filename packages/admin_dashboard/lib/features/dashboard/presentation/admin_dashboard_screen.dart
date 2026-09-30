@@ -305,7 +305,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            Text(count, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.black, color: Color(0xFF0E2A47))),
+            Text(count, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Color(0xFF0E2A47))),
             const SizedBox(height: 4),
             Text(title, style: const TextStyle(fontSize: 11, color: Colors.grey)),
           ],

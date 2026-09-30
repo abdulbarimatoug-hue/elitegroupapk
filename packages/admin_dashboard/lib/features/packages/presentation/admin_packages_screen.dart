@@ -80,7 +80,7 @@ class AdminPackagesScreen extends ConsumerWidget {
           Expanded(flex: 3, child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF0E2A47)))),
           Expanded(child: Text(destination, style: const TextStyle(fontSize: 12))),
           Expanded(child: Text(duration, style: const TextStyle(fontSize: 12, color: Colors.grey))),
-          Expanded(child: Text(price, style: const TextStyle(fontWeight: FontWeight.black, fontSize: 14, color: Color(0xFF0E2A47)))),
+          Expanded(child: Text(price, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 14, color: Color(0xFF0E2A47)))),
           Row(
             children: [
               IconButton(icon: const Icon(Icons.edit_outlined, size: 18, color: Color(0xFF0E2A47)), onPressed: () {}),

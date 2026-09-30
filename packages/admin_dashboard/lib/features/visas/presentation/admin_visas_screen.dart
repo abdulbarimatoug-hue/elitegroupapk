@@ -79,7 +79,7 @@ class AdminVisasScreen extends ConsumerWidget {
         children: [
           Expanded(child: Text(country, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0E2A47)))),
           Expanded(flex: 2, child: Text(title, style: const TextStyle(fontSize: 12))),
-          Expanded(child: Text(price, style: const TextStyle(fontWeight: FontWeight.black, fontSize: 14, color: Color(0xFFC9A227)))),
+          Expanded(child: Text(price, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 14, color: Color(0xFFC9A227)))),
           Expanded(child: Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey))),
           Expanded(child: Text('$docsCount مستندات مطلوبة', style: const TextStyle(fontSize: 12))),
           Row(
