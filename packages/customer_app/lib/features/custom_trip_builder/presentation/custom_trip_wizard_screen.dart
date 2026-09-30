@@ -26,11 +26,11 @@ class _CustomTripWizardScreenState
   // Step 1 State
   final _nameController = TextEditingController(text: 'عبد الباري معتوق');
   final _phoneController = TextEditingController(text: '+218 91 591 9921');
-  String _selectedNationality = 'ليبي';
+  final String _selectedNationality = 'ليبي';
   String _tripType = 'رحلة عائلية';
   String? _selectedBusinessSector;
-  int _adultsCount = 2;
-  int _childrenCount = 1;
+  final int _adultsCount = 2;
+  final int _childrenCount = 1;
   final _budgetController = TextEditingController(text: '3500');
 
   // Step 2 State (Selected Cities & Countries)
@@ -40,9 +40,9 @@ class _CustomTripWizardScreenState
   // Step 3 State (Flight & Days)
   final _departureCityController = TextEditingController(text: 'طرابلس (معيتيقة)');
   String flightClass = 'اقتصادية';
-  DateTime _startDate = DateTime.now().add(const Duration(days: 20));
-  int _totalDays = 8;
-  String? _selectedReadyPackageId = 'pkg_classic_7';
+  final DateTime _startDate = DateTime.now().add(const Duration(days: 20));
+  final int _totalDays = 8;
+  final String? _selectedReadyPackageId = 'pkg_classic_7';
   final Map<String, int> _cityDaysDistribution = {'إسطنبول': 4, 'طرابزون': 4};
   final Map<String, String> _countryTransit = {'تركيا': 'طيران داخلي'};
 
@@ -65,26 +65,41 @@ class _CustomTripWizardScreenState
     _loadConfigAndLocalDraft();
   }
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _budgetController.dispose();
+    _departureCityController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadConfigAndLocalDraft() async {
     try {
       final tripRepo = ref.read(customTripRepositoryProvider);
       final cfg = await tripRepo.getTripBuilderConfig();
-      setState(() {
-        _config = cfg;
-        _isLoadingConfig = false;
-      });
+      if (mounted) {
+        setState(() {
+          _config = cfg;
+          _isLoadingConfig = false;
+        });
+      }
 
       // Load draft from SharedPreferences if exists
       final prefs = await SharedPreferences.getInstance();
       final draftJson = prefs.getString('custom_trip_draft');
       if (draftJson != null) {
         final map = jsonDecode(draftJson) as Map<String, dynamic>;
-        if (map['currentStep'] != null) {
-          _currentStep = map['currentStep'] as int;
+        if (map['currentStep'] != null && mounted) {
+          setState(() {
+            _currentStep = map['currentStep'] as int;
+          });
         }
       }
     } catch (_) {
-      setState(() => _isLoadingConfig = false);
+      if (mounted) {
+        setState(() => _isLoadingConfig = false);
+      }
     }
   }
 
@@ -388,7 +403,7 @@ class _CustomTripWizardScreenState
         TextField(
           controller: _budgetController,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: 'الميزانية المخصصة بالدولار ($1500 كحد أدنى) *', border: OutlineInputBorder()),
+          decoration: const InputDecoration(labelText: 'الميزانية المخصصة بالدولار (\$1500 كحد أدنى) *', border: OutlineInputBorder()),
         ),
       ],
     );
@@ -486,7 +501,7 @@ class _CustomTripWizardScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠️', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900)),
+              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900)),
             ],
           ),
         ),
@@ -494,11 +509,4 @@ class _CustomTripWizardScreenState
         ..._cityDaysDistribution.keys.map((cityName) => Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(cityName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        onPressed: () {
+                mainAxisAlignment: Mai
