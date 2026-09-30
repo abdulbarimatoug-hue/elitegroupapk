@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,11 +6,11 @@ import '../../../core/constants/company_contacts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/whatsapp_helper.dart';
 import '../../../core/providers/repository_providers.dart';
-import 'package:core_domain/entities/trip_builder_config_entity.dart';
-import 'package:core_domain/entities/custom_trip_request_entity.dart';
+import 'package0domain/entities/trip_builder_config_entity.dart';
+import 'package0domain/entities/custom_trip_request_entity.dart';
 
 class CustomTripWizardScreen extends ConsumerStatefulWidget {
-  const CustomTripWizardScreen({super.size});
+  const CustomTripWizardScreen({super.key});
 
   @override
   ConsumerState<CustomTripWizardScreen> createState() =>
@@ -507,119 +506,4 @@ class _CustomTripWizardScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.shade900)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        ..._cityDaysDistribution.keys.map((cityName) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(cityName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        onPressed: () {
-                          int current = _cityDaysDistribution[cityName] ?? 1;
-                          if (current > 1) {
-                            setState(() {
-                              _cityDaysDistribution[cityName] = current - 1;
-                            });
-                          }
-                        },
-                      ),
-                      Text('${_cityDaysDistribution[cityName]} أيام'),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle_outline),
-                        onPressed: () {
-                          int current = _cityDaysDistribution[cityName] ?? 1;
-                          setState(() {
-                            _cityDaysDistribution[cityName] = current + 1;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )),
-      ],
-    );
-  }
-
-  Widget _buildStep4StayAndReception() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('خيارات الإقامة والتنقلات', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
-        SwitchListTile(
-          title: const Text('طلب خدمة الاستقبال من المطار'),
-          value: _airportMeetAndGreet,
-          onChanged: (val) => setState(() => _airportMeetAndGreet = val),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStep5TourPreferences() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('تفضيلات الجولات والأنشطة', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
-        ListTile(
-          title: const Text('نوع الجولة'),
-          subtitle: Text(_tourType),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStep6BoardingPassSummary() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('ملخص الطلب', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                ListTile(
-                  title: const Text('نوع الرحلة'),
-                  subtitle: Text(_tripType),
-                ),
-                ListTile(
-                  title: const Text('عدد المسافرين'),
-                  subtitle: Text('بالغين: $_adultsCount, أطفال: $_childrenCount'),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _isSubmitting
-                        ? null
-                        : () => _submitRequest(CompanyContacts.primaryWhatsApp),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.accentGold,
-                      foregroundColor: AppColors.primaryNavyDark,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    child: _isSubmitting
-                        ? const CircularProgressIndicator()
-                        : const Text('إرسال عبر الواتساب', style: TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green : Colors.amber.sha
