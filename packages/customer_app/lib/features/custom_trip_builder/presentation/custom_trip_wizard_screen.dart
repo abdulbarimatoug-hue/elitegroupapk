@@ -29,8 +29,8 @@ class _CustomTripWizardScreenState
   final String _selectedNationality = 'ليبي';
   String _tripType = 'رحلة عائلية';
   String? _selectedBusinessSector;
-  final int _adultsCount = 2;
-  final int _childrenCount = 1;
+  int _adultsCount = 2;
+  int _childrenCount = 1;
   final _budgetController = TextEditingController(text: '3500');
 
   // Step 2 State
@@ -40,8 +40,8 @@ class _CustomTripWizardScreenState
   // Step 3 State
   final _departureCityController = TextEditingController(text: 'طرابلس (معيتيقة)');
   String flightClass = 'اقتصادية';
-  final DateTime _startDate = DateTime.now().add(const Duration(days: 20));
-  final int _totalDays = 8;
+  DateTime _startDate = DateTime.now().add(const Duration(days: 20));
+  int _totalDays = 8;
   final Map<String, int> _cityDaysDistribution = {'إسطنبول': 4, 'طرابزون': 4};
   final Map<String, String> _countryTransit = {'تركيا': 'طيران داخلي'};
 
@@ -52,8 +52,8 @@ class _CustomTripWizardScreenState
   final Set<String> _additionalServices = {'تأمين سفر دولي معتمد', 'شريحة إنترنت واتصال محلية'};
 
   // Step 5 State
-  final String _guideLanguage = 'عربية';
-  final String _tourType = 'خاصة Private';
+  String _guideLanguage = 'عربية';
+  String _tourType = 'خاصة Private';
   final Set<String> _tourInterests = {'طبيعة وجبال وغابات', 'تسوق ومولات وأسوق شعبية'};
 
   bool _isSubmitting = false;
@@ -158,7 +158,10 @@ class _CustomTripWizardScreenState
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: const Color(0xFFDC2626), content: Text(msg, textDirection: TextDirection.rtl)),
+      SnackBar(
+        backgroundColor: const Color(0xFFDC2626),
+        content: Text(msg, textDirection: TextDirection.rtl),
+      ),
     );
   }
 
@@ -218,6 +221,8 @@ class _CustomTripWizardScreenState
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('custom_trip_draft');
 
+      final formattedDate = "${_startDate.year}-${_startDate.month.toString().padLeft(2, '0')}-${_startDate.day.toString().padLeft(2, '0')}";
+
       final msg = '''
 مرحباً فريق تصميم الرحلات المخصصة بمجموعة النخبة للسياحة،
 أود اعتماد طلب الرحلة المخصصة المنشأ عبر التطبيق:
@@ -226,12 +231,12 @@ class _CustomTripWizardScreenState
 📱 الهاتف: ${_phoneController.text.trim()}
 🌍 الوجهات: ${_selectedCountryIds.join(', ')}
 ✈️ مدينة الانطلاق: ${_departureCityController.text.trim()} ($flightClass)
-📅 تاريخ البدء: ${_startDate.year}-${_startDate.month}-${_startDate.day} (مدة $_totalDays أيام)
+📅 تاريخ البدء: $formattedDate (مدة $_totalDays أيام)
 👥 المسافرون: $_adultsCount بالغين، $_childrenCount أطفال
 💰 الميزانية المخصصة: \$${_budgetController.text}
 🏨 الإقامة: ${_starRatings.join(', ')} (${_accommodationTypes.join(', ')})
 🚗 الاستقبال بالمطار: ${_airportMeetAndGreet ? "نعم" : "لا"}
-🗣️ المرشد: $_guideLanguage (${_tourType})
+🗣️ المرشد: $_guideLanguage ($_tourType)
 
 أرجو تزويدي بالبرنامج التفصيلي وعرض السعر المعتمد.
 ''';
@@ -369,9 +374,15 @@ class _CustomTripWizardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(controller: _nameController, decoration: const InputDecoration(labelText: 'الاسم الكامل *', border: OutlineInputBorder())),
+        TextField(
+          controller: _nameController,
+          decoration: const InputDecoration(labelText: 'الاسم الكامل *', border: OutlineInputBorder()),
+        ),
         const SizedBox(height: 12),
-        TextField(controller: _phoneController, decoration: const InputDecoration(labelText: 'رقم الهاتف (+218) *', border: OutlineInputBorder())),
+        TextField(
+          controller: _phoneController,
+          decoration: const InputDecoration(labelText: 'رقم الهاتف (+218) *', border: OutlineInputBorder()),
+        ),
         const SizedBox(height: 16),
         const Text('نوع الرحلة:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
         const SizedBox(height: 8),
@@ -400,10 +411,56 @@ class _CustomTripWizardScreenState
           ),
         ],
         const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: ListTile(
+                title: const Text('بالغين'),
+                subtitle: Text('$_adultsCount'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outline),
+                      onPressed: _adultsCount > 1 ? () => setState(() => _adultsCount--) : null,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add_circle_outline),
+                      onPressed: () => setState(() => _adultsCount++),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListTile(
+                title: const Text('أطفال'),
+                subtitle: Text('$_childrenCount'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outline),
+                      onPressed: _childrenCount > 0 ? () => setState(() => _childrenCount--) : null,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add_circle_outline),
+                      onPressed: () => setState(() => _childrenCount++),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
         TextField(
           controller: _budgetController,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: 'الميزانية المخصصة بالدولار (\$1500 كحد أدنى) *', border: OutlineInputBorder()),
+          decoration: const InputDecoration(
+            labelText: 'الميزانية المخصصة بالدولار (\$1500 كحد أدنى) *',
+            border: OutlineInputBorder(),
+          ),
         ),
       ],
     );
@@ -478,7 +535,10 @@ class _CustomTripWizardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(controller: _departureCityController, decoration: const InputDecoration(labelText: 'مدينة الانطلاق *', border: OutlineInputBorder())),
+        TextField(
+          controller: _departureCityController,
+          decoration: const InputDecoration(labelText: 'مدينة الانطلاق *', border: OutlineInputBorder()),
+        ),
         const SizedBox(height: 12),
         Row(
           children: ['اقتصادية', 'رجال أعمال'].map((c) {
@@ -496,6 +556,44 @@ class _CustomTripWizardScreenState
           }).toList(),
         ),
         const SizedBox(height: 16),
+        ListTile(
+          title: const Text('إجمالي عدد الأيام'),
+          trailing: DropdownButton<int>(
+            value: _totalDays,
+            items: List.generate(30, (i) => i + 1)
+                .map((d) => DropdownMenuItem(value: d, child: Text('$d أيام')))
+                .toList(),
+            onChanged: (v) {
+              if (v != null) setState(() => _totalDays = v);
+            },
+          ),
+        ),
+        const Divider(),
+        const Text('توزيع الأيام على المدن:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+        const SizedBox(height: 8),
+        ..._cityDaysDistribution.keys.map((cityName) {
+          final days = _cityDaysDistribution[cityName] ?? 1;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(cityName),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: days > 1 ? () => setState(() => _cityDaysDistribution[cityName] = days - 1) : null,
+                  ),
+                  Text('$days يوم'),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () => setState(() => _cityDaysDistribution[cityName] = days + 1),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }),
+        const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
@@ -505,5 +603,177 @@ class _CustomTripWizardScreenState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('مجموع الأيام الموزعة: $sumDays من $_totalDays', style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900)),
-              Text(isMatch ? 'متطابق ✓' : 'غير متطابق ⚠', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bo
+              Text(
+                'مجموع الأيام الموزعة: $sumDays من $_totalDays',
+                style: TextStyle(fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900),
+              ),
+              Text(
+                isMatch ? 'متطابق ✓' : 'غير متطابق ⚠',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isMatch ? Colors.green.shade900 : Colors.amber.shade900),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStep4StayAndReception() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SwitchListTile(
+          title: const Text('خدمة الاستقبال والتوديع في المطار'),
+          value: _airportMeetAndGreet,
+          onChanged: (v) => setState(() => _airportMeetAndGreet = v),
+        ),
+        const Divider(),
+        const Text('نوع الإقامة المفضل:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: ['فنادق', 'شقق فندقية', 'فلل خاصة'].map((type) {
+            final isSel = _accommodationTypes.contains(type);
+            return FilterChip(
+              label: Text(type),
+              selected: isSel,
+              onSelected: (val) {
+                setState(() {
+                  val ? _accommodationTypes.add(type) : _accommodationTypes.remove(type);
+                });
+              },
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 16),
+        const Text('فئة التصنيف:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: ['4 نجوم', '5 نجوم', 'فاخر VIP'].map((star) {
+            final isSel = _starRatings.contains(star);
+            return FilterChip(
+              label: Text(star),
+              selected: isSel,
+              onSelected: (val) {
+                setState(() {
+                  val ? _starRatings.add(star) : _starRatings.remove(star);
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStep5TourPreferences() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('لغة المرشد السياحي:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: ['عربية', 'إنجليزية', 'تركمانية / محلية'].map((lang) {
+            final isSel = _guideLanguage == lang;
+            return ChoiceChip(
+              label: Text(lang),
+              selected: isSel,
+              onSelected: (val) => setState(() => _guideLanguage = lang),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 16),
+        const Text('نوع الجولات:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: ['خاصة Private', 'ضمن مجموعة Group'].map((t) {
+            final isSel = _tourType == t;
+            return ChoiceChip(
+              label: Text(t),
+              selected: isSel,
+              onSelected: (val) => setState(() => _tourType = t),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 16),
+        const Text('اهتمامات الجولات:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: ['طبيعة وجبال وغابات', 'تسوق ومولات وأسوق شعبية', 'معالم تاريخية وثقافية', 'أنشطة مغامرة وألعاب مائية'].map((interest) {
+            final isSel = _tourInterests.contains(interest);
+            return FilterChip(
+              label: Text(interest),
+              selected: isSel,
+              onSelected: (val) {
+                setState(() {
+                  val ? _tourInterests.add(interest) : _tourInterests.remove(interest);
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStep6BoardingPassSummary() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('بطاقة ملخص الرحلة', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
+                    Icon(Icons.flight_takeoff, color: AppColors.accentGold),
+                  ],
+                ),
+                const Divider(),
+                Text('الاسم: ${_nameController.text}'),
+                Text('الهاتف: ${_phoneController.text}'),
+                Text('نوع الرحلة: $_tripType'),
+                Text('الميزانية: \$${_budgetController.text}'),
+                Text('مدينة الانطلاق: ${_departureCityController.text} ($flightClass)'),
+                Text('مدة الرحلة: $_totalDays أيام'),
+                Text('الإقامة: ${_starRatings.join(', ')}'),
+                Text('المرشد: $_guideLanguage ($_tourType)'),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        if (_isSubmitting)
+          const Center(child: CircularProgressIndicator())
+        else
+          Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.send),
+                  label: const Text('إرسال عبر الواتساب (المقر الرئيسي)'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF25D366),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  onPressed: () => _submitRequest(CompanyContacts.primaryWhatsApp),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+}
